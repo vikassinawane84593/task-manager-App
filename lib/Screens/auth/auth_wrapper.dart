@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/Screens/HomeScreen.dart';
 import 'package:task_manager_app/Screens/auth/login_Screen.dart';
 
 class AuthWraper extends StatelessWidget {
@@ -18,6 +19,8 @@ class AuthWraper extends StatelessWidget {
           }
 
           else if(snapshot.hasData){
+
+            return HomeScreen();
 
           }
 
