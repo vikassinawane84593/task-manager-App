@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1040836441460",
+    "project_id": "cookeasy-10009",
+    "storage_bucket": "cookeasy-10009.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040836441460:android:f31e911543a32b18ba2821",
+        "android_client_info": {
+          "package_name": "com.example.nexaopsai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtj5u6_8NpDJ512Qo_KzPGP4XFjglmgBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040836441460:android:61d8564397e14da8ba2821",
+        "android_client_info": {
+          "package_name": "com.example.task_manager_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtj5u6_8NpDJ512Qo_KzPGP4XFjglmgBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
