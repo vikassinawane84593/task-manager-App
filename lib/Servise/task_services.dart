@@ -12,7 +12,22 @@ class TaskService {
         .collection("tasks")
         .doc(task.id)
         .set(task.toMap());
+  }
 
+  Future<void> deleteTask(String id) async {
+
+    await firestore
+        .collection("tasks")
+        .doc(id)
+        .delete();
+  }
+
+  Future<void> updateTask(TaskModel task) async {
+
+    await firestore
+        .collection("tasks")
+        .doc(task.id)
+        .update(task.toMap());
   }
 
   Stream<QuerySnapshot> getTasks() {
@@ -20,6 +35,5 @@ class TaskService {
     return firestore
         .collection("tasks")
         .snapshots();
-
   }
 }
