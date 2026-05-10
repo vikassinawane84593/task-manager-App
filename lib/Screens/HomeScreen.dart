@@ -6,6 +6,7 @@ import 'package:task_manager_app/Screens/edit_task.dart';
 import 'package:task_manager_app/Servise/auth_service.dart';
 import 'package:task_manager_app/Servise/task_services.dart';
 import 'package:task_manager_app/model/task_model.dart';
+import 'package:task_manager_app/widgets/task_tile.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,12 +22,9 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: const Color(0xfff5f5f5),
 
       appBar: AppBar(
-
         backgroundColor: Colors.red,
-
         title: const Text(
           "Task Manager",
-
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -36,17 +34,11 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
 
         actions: [
-
           IconButton(
-
             onPressed: () async {
-
               await authService.logout();
-
               Navigator.pushReplacement(
-
                 context,
-
                 MaterialPageRoute(
                   builder: (context) =>
                   const LoginScreen(),
@@ -65,14 +57,10 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
 
         padding: const EdgeInsets.all(20),
-
         child: Column(
-
           crossAxisAlignment:
           CrossAxisAlignment.start,
-
           children: [
-
             Container(
 
               width: double.infinity,
@@ -80,7 +68,6 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20),
 
               decoration: BoxDecoration(
-
                 color: Colors.red.shade700,
 
                 borderRadius:
@@ -96,7 +83,6 @@ class HomeScreen extends StatelessWidget {
 
                   Text(
                     "Welcome Back 👋",
-
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -105,7 +91,6 @@ class HomeScreen extends StatelessWidget {
                   ),
 
                   SizedBox(height: 10),
-
                   Text(
                     "Manage your daily tasks easily",
 
@@ -121,7 +106,6 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 30),
 
             const Text(
-
               "Your Tasks",
 
               style: TextStyle(
@@ -133,11 +117,8 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             Expanded(
-
               child: StreamBuilder<QuerySnapshot>(
-
                 stream: taskService.getTasks(),
-
                 builder: (context, snapshot) {
 
                   if (snapshot.connectionState ==
@@ -152,7 +133,6 @@ class HomeScreen extends StatelessWidget {
                       snapshot.data!.docs.isEmpty) {
 
                     return Center(
-
                       child: Column(
 
                         mainAxisAlignment:
@@ -171,7 +151,6 @@ class HomeScreen extends StatelessWidget {
                           Text(
 
                             "No Tasks Yet",
-
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.grey.shade600,
@@ -181,9 +160,7 @@ class HomeScreen extends StatelessWidget {
 
                           const SizedBox(height: 8),
 
-                          Text(
-
-                            "Tap + button to add tasks",
+                          Text("Tap + button to add tasks",
 
                             style: TextStyle(
                               fontSize: 15,
@@ -205,191 +182,94 @@ class HomeScreen extends StatelessWidget {
 
                       final task = tasks[index];
 
-                      return Card(
+                      return  TaskTile(
 
-                        margin: const EdgeInsets.only(
-                          bottom: 15,
-                        ),
+                        title: task["title"],
 
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(15),
-                        ),
+                        description: task["description"],
 
-                        child: ListTile(
+                        date: task["date"],
 
-                          isThreeLine: true,
+                        onEdit: () {
 
-                          contentPadding:
-                          const EdgeInsets.all(15),
+                          TaskModel taskModel =
+                          TaskModel(
 
-                          title: Text(
+                            id: task.id,
 
-                            task["title"],
+                            title: task["title"],
 
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                            description:
+                            task["description"],
 
-                          subtitle: Padding(
+                            date: task["date"],
+                          );
 
-                            padding:
-                            const EdgeInsets.only(
-                              top: 8,
-                            ),
+                          Navigator.push(
 
-                            child: Text(
-                              task["description"],
-                            ),
-                          ),
+                            context,
 
-                          trailing: SingleChildScrollView(
+                            MaterialPageRoute(
 
-                            child: Column(
-
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
-
-                              children: [
-
-                                Text(
-
-                                  task["date"],
-
-                                  style: TextStyle(
-                                    color: Colors.red.shade700,
-                                    fontWeight:
-                                    FontWeight.bold,
+                              builder: (context) =>
+                                  EditTaskScreen(
+                                    task: taskModel,
                                   ),
-                                ),
-
-                                Row(
-
-                                  mainAxisSize:
-                                  MainAxisSize.min,
-
-                                  children: [
-
-                                    IconButton(
-
-                                      onPressed: () {
-
-                                        TaskModel taskModel =
-                                        TaskModel(
-
-                                          id: task.id,
-
-                                          title:
-                                          task["title"],
-
-                                          description:
-                                          task["description"],
-
-                                          date:
-                                          task["date"],
-                                        );
-
-                                        Navigator.push(
-
-                                          context,
-
-                                          MaterialPageRoute(
-
-                                            builder: (context) =>
-                                                EditTaskScreen(
-                                                  task: taskModel,
-                                                ),
-                                          ),
-                                        );
-                                      },
-
-                                      icon: const Icon(
-                                        Icons.edit,
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-
-                                    IconButton(
-
-                                      onPressed: () async {
-
-                                        showDialog(
-
-                                          context: context,
-
-                                          builder: (context) {
-
-                                            return AlertDialog(
-
-                                              title: const Text(
-                                                "Delete Task",
-                                              ),
-
-                                              content: const Text(
-                                                "Are you sure you want to delete this task?",
-                                              ),
-
-                                              actions: [
-
-                                                TextButton(
-
-                                                  onPressed: () {
-
-                                                    Navigator.pop(context);
-                                                  },
-
-                                                  child: const Text(
-                                                    "Cancel",
-                                                  ),
-                                                ),
-
-                                                TextButton(
-
-                                                  onPressed: () async {
-
-                                                    await taskService
-                                                        .deleteTask(task.id);
-
-                                                    Navigator.pop(context);
-
-                                                    ScaffoldMessenger.of(context)
-                                                        .showSnackBar(
-
-                                                      const SnackBar(
-                                                        content: Text(
-                                                          "Task Deleted",
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-
-                                                  child: const Text(
-
-                                                    "Delete",
-
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
                             ),
-                          ),
-                        ),
+                          );
+                        },
+
+                        onDelete: () async {
+
+                          showDialog(
+
+                            context: context,
+
+                            builder: (context) {
+
+                              return AlertDialog(
+
+                                title: const Text(
+                                  "Delete Task",
+                                ),
+
+                                content: const Text(
+                                  "Are you sure you want to delete this task?",
+                                ),
+
+                                actions: [
+
+                                  TextButton(
+
+                                    onPressed: () {
+
+                                      Navigator.pop(context);
+                                    },
+
+                                    child: const Text(
+                                      "Cancel",
+                                    ),
+                                  ),
+
+                                  TextButton(
+
+                                    onPressed: () async {
+
+                                      await taskService
+                                          .deleteTask(task.id);
+
+                                      Navigator.pop(context);
+                                    },
+
+                                    child: const Text(
+                                      "Delete",
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                       );
                     },
                   );
@@ -406,11 +286,8 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.red.shade700,
 
         onPressed: () {
-
           Navigator.push(
-
             context,
-
             MaterialPageRoute(
               builder: (context) =>
               const AddTaskScreen(),
