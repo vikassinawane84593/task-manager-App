@@ -166,15 +166,14 @@ class HomeScreen extends StatelessWidget {
                       final task = tasks[index];
 
                       return Card(
-                        margin: const EdgeInsets.only(
-                          bottom: 15,
-                        ),
+
                         shape: RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.circular(15),
                         ),
 
                         child: ListTile(
+                          isThreeLine: true,
                           contentPadding:
                           const EdgeInsets.all(15),
                           title: Text(
@@ -195,78 +194,79 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
 
-                          trailing: Column(
-
-                            mainAxisAlignment:
-                            MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                task["date"],
-                                style: TextStyle(
-                                  color: Colors.red.shade700,
-                                  fontWeight:
-                                  FontWeight.bold,
+                          trailing: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task["date"],
+                                  style: TextStyle(
+                                    color: Colors.red.shade700,
+                                    fontWeight:
+                                    FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-
-                              Row(
-
-                                mainAxisSize:
-                                MainAxisSize.min,
-                                children: [
-                                  IconButton(
-
-                                    onPressed: () {
-
-                                      TaskModel taskModel =
-                                      TaskModel(
-
-                                        id: task.id,
-                                        title:
-                                        task["title"],
-                                        description:
-                                        task["description"],
-                                        date:
-                                        task["date"],
-                                      );
-
-                                      Navigator.push(
-
-                                        context,
-
-                                        MaterialPageRoute(
-
-                                          builder: (context) =>
-                                              EditTaskScreen(
-                                                task: taskModel,
-                                              ),
-                                        ),
-                                      );
-                                    },
-
-                                    icon: const Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
+                            
+                                Row(
+                            
+                                  mainAxisSize:
+                                  MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                            
+                                      onPressed: () {
+                            
+                                        TaskModel taskModel =
+                                        TaskModel(
+                            
+                                          id: task.id,
+                                          title:
+                                          task["title"],
+                                          description:
+                                          task["description"],
+                                          date:
+                                          task["date"],
+                                        );
+                            
+                                        Navigator.push(
+                            
+                                          context,
+                            
+                                          MaterialPageRoute(
+                            
+                                            builder: (context) =>
+                                                EditTaskScreen(
+                                                  task: taskModel,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                            
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.blue,
+                                      ),
                                     ),
-                                  ),
-
-                                  IconButton(
-
-                                    onPressed: () async {
-
-                                      await taskService
-                                          .deleteTask(
-                                          task.id);
-                                    },
-
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
+                            
+                                    IconButton(
+                            
+                                      onPressed: () async {
+                            
+                                        await taskService
+                                            .deleteTask(
+                                            task.id);
+                                      },
+                            
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
