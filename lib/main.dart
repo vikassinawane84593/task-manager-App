@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/Screens/HomeScreen.dart';
+import 'package:task_manager_app/Screens/add_task_screen.dart';
 import 'package:task_manager_app/Screens/auth/login_Screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen(),
+      home: AddTaskScreen(),
     );
   }
 }

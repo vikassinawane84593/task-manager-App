@@ -4,20 +4,15 @@ import 'package:task_manager_app/Servise/auth_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
 
     final AuthService authService = AuthService();
-
     return Scaffold(
-
       backgroundColor: const Color(0xfff5f5f5),
 
       appBar: AppBar(
-
-        backgroundColor: Colors.red.shade700,
-
+        backgroundColor: Colors.red,
         title: const Text(
           "Task Manager",
           style: TextStyle(
@@ -29,13 +24,9 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
 
         actions: [
-
           IconButton(
-
             onPressed: () async {
-
               await authService.logout();
-
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -54,26 +45,18 @@ class HomeScreen extends StatelessWidget {
 
       body: Padding(
         padding: const EdgeInsets.all(20),
-
         child: Column(
-
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
-
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
-
               decoration: BoxDecoration(
                 color: Colors.red.shade700,
                 borderRadius: BorderRadius.circular(20),
               ),
-
               child: const Column(
-
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: [
 
                   Text(
@@ -113,12 +96,9 @@ class HomeScreen extends StatelessWidget {
             Expanded(
 
               child: Center(
-
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-
                   children: [
-
                     Icon(
                       Icons.task_alt,
                       size: 80,
@@ -154,12 +134,9 @@ class HomeScreen extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
-
         backgroundColor: Colors.red.shade700,
-
         onPressed: () {
-
-        },
+          },
 
         child: const Icon(
           Icons.add,
