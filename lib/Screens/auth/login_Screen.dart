@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:task_manager_app/Screens/HomeScreen.dart';
 import 'package:task_manager_app/Screens/auth/Signup_screen.dart';
 import 'package:task_manager_app/Servise/auth_service.dart';
 import 'package:task_manager_app/providers/auth_provider.dart';
@@ -129,12 +130,42 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       onPressed: () async{
                         if(_formkey.currentState!.validate()){
+
+                          ref.read(isLoginLoadingProvider.notifier).state=true;
+
                           String? message = await  _auth.login(
                               email: emailController.text,
                               password: passwordController.text
                           );
-                        }
-                      },
+
+                          ref.read(isLoginLoadingProvider.notifier).state=false;
+
+                          if(message==null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Login Completed'))
+                            );
+
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ontext) => HomeScreen()
+                                )
+                            );
+                          }
+
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(message)));
+                          }
+
+                          }
+
+
+
+                        },
+
 
                       child: isLoading
                           ? const CircularProgressIndicator(

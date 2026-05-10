@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/Screens/add_task_screen.dart';
 import 'package:task_manager_app/Screens/auth/login_Screen.dart';
 import 'package:task_manager_app/Servise/auth_service.dart';
+import 'package:task_manager_app/Servise/task_services.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
 
     final AuthService authService = AuthService();
+    final TaskService taskService = TaskService();
+
     return Scaffold(
       backgroundColor: const Color(0xfff5f5f5),
 
@@ -30,7 +36,8 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
+                  builder: (context) =>
+                  const LoginScreen(),
                 ),
               );
             },
@@ -44,27 +51,40 @@ class HomeScreen extends StatelessWidget {
       ),
 
       body: Padding(
+
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
           children: [
+
             Container(
+
               width: double.infinity,
+
               padding: const EdgeInsets.all(20),
+
               decoration: BoxDecoration(
                 color: Colors.red.shade700,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius:
+                BorderRadius.circular(20),
               ),
+
               child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+
                 children: [
 
                   Text(
                     "Welcome Back 👋",
+
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontWeight:
+                      FontWeight.bold,
                     ),
                   ),
 
@@ -72,6 +92,7 @@ class HomeScreen extends StatelessWidget {
 
                   Text(
                     "Manage your daily tasks easily",
+
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
@@ -85,6 +106,7 @@ class HomeScreen extends StatelessWidget {
 
             const Text(
               "Your Tasks",
+
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -95,48 +117,160 @@ class HomeScreen extends StatelessWidget {
 
             Expanded(
 
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.task_alt,
-                      size: 80,
-                      color: Colors.grey.shade400,
-                    ),
+              child: StreamBuilder<QuerySnapshot>(
 
-                    const SizedBox(height: 15),
+                stream: taskService.getTasks(),
 
-                    Text(
-                      "No Tasks Yet",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.grey.shade600,
-                        fontWeight: FontWeight.w500,
+                builder: (context, snapshot) {
+
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if (!snapshot.hasData ||
+                      snapshot.data!.docs.isEmpty) {
+
+                    return Center(
+
+                      child: Column(
+
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+
+                        children: [
+
+                          Icon(
+                            Icons.task_alt,
+                            size: 80,
+                            color:
+                            Colors.grey.shade400,
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          Text(
+                            "No Tasks Yet",
+
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors
+                                  .grey.shade600,
+                              fontWeight:
+                              FontWeight.w500,
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          Text(
+                            "Tap + button to add tasks",
+
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors
+                                  .grey.shade500,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    );
+                  }
 
-                    const SizedBox(height: 8),
+                  final tasks =
+                      snapshot.data!.docs;
 
-                    Text(
-                      "Tap + button to add tasks",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey.shade500,
-                      ),
-                    ),
-                  ],
-                ),
+                  return ListView.builder(
+
+                    itemCount: tasks.length,
+
+                    itemBuilder:
+                        (context, index) {
+
+                      final task = tasks[index];
+
+                      return Card(
+
+                        margin:
+                        const EdgeInsets.only(
+                          bottom: 15,
+                        ),
+
+                        shape:
+                        RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(
+                              15),
+                        ),
+
+                        child: ListTile(
+
+                          contentPadding:
+                          const EdgeInsets.all(
+                              15),
+
+                          title: Text(
+
+                            task["title"],
+
+                            style: const TextStyle(
+                              fontWeight:
+                              FontWeight.bold,
+                            ),
+                          ),
+
+                          subtitle: Padding(
+
+                            padding:
+                            const EdgeInsets.only(
+                              top: 8,
+                            ),
+
+                            child: Text(
+                              task["description"],
+                            ),
+                          ),
+
+                          trailing: Text(
+
+                            task["date"],
+
+                            style: TextStyle(
+                              color: Colors
+                                  .red.shade700,
+                              fontWeight:
+                              FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:
+      FloatingActionButton(
+
         backgroundColor: Colors.red.shade700,
+
         onPressed: () {
-          },
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+               AddTaskScreen(),
+            ),
+          );
+        },
 
         child: const Icon(
           Icons.add,

@@ -176,6 +176,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               content: Text("Signup Successful"),
                             ),
                           );
+                         Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
                         }
                         else {
                           ScaffoldMessenger.of(context).showSnackBar(

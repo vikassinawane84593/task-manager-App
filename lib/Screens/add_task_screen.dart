@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/Servise/task_services.dart';
+import 'package:task_manager_app/model/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -14,6 +16,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   final _formKey = GlobalKey<FormState>();
   DateTime? selectedDate;
+
+  final TaskService taskService = TaskService();
 
   @override
   Widget build(BuildContext context) {
@@ -210,15 +214,45 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       ),
                     ),
 
-                    onPressed: () {
+                    onPressed: () async {
 
                       if (_formKey.currentState!.validate()) {
 
+                        if (selectedDate == null) {
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Please select date"),
+                            ),
+                          );
+
+                          return;
+                        }
+
+                        TaskModel task = TaskModel(
+
+                          id: DateTime.now()
+                              .millisecondsSinceEpoch
+                              .toString(),
+
+                          title: titleController.text.trim(),
+
+                          description:
+                          descriptionController.text.trim(),
+
+                          date:
+                          "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+                        );
+
+                        await taskService.addTask(task);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Task Added"),
+                            content: Text("Task Added Successfully"),
                           ),
                         );
+
+                        Navigator.pop(context);
                       }
                     },
 
